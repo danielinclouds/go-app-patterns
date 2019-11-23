@@ -1,0 +1,3 @@
+secret: john
+logLevel: INFO
+# logLevel: DEBUG
