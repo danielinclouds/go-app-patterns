@@ -3,7 +3,7 @@
 # -----------------------------
 # Build container
 # -----------------------------
-FROM golang:1.12.7 AS builder
+FROM golang:1.14.4 AS builder
 WORKDIR /app
 
 # Download dependencies
