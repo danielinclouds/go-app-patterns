@@ -1,0 +1,29 @@
+
+# -----------------------------
+# Build container
+# -----------------------------
+FROM golang:1.14.4 AS image_splitter
+WORKDIR /app
+
+
+COPY image_splitter/ .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o image_splitter .
+
+# ----
+FROM golang:1.14.4 AS printer
+WORKDIR /app
+
+
+COPY printer/ .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o printer .
+
+
+# -----------------------------
+# Final container
+# -----------------------------
+FROM alpine:3
+
+RUN apk add --update --no-cache wget git curl ca-certificates
+
+COPY --from=image_splitter /app/image_splitter /usr/local/bin/image_splitter
+COPY --from=printer /app/printer /usr/local/bin/printer

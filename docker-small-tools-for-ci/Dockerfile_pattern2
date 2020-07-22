@@ -1,0 +1,20 @@
+
+# -----------------------------
+# Build container
+# -----------------------------
+FROM image_splitter AS image_splitter
+
+# ----
+FROM printer AS printer
+
+
+# -----------------------------
+# Final container
+# -----------------------------
+FROM alpine:3
+
+RUN apk add --update --no-cache wget git curl ca-certificates
+
+COPY --from=image_splitter /usr/local/bin/image_splitter /usr/local/bin/image_splitter
+COPY --from=printer /usr/local/bin/printer /usr/local/bin/printer
+
